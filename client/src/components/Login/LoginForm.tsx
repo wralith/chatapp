@@ -1,7 +1,11 @@
+import { useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Box, TextInput, Group, Button, PasswordInput } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
-import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { showNotification } from "@mantine/notifications"
+import axios from "axios"
+
+import { loginRoute } from "../../utils/APIRoutes"
 
 import schema, { LoginSchema } from "./loginValidationSchema"
 
@@ -12,6 +16,7 @@ interface RegisterRedirectState {
 
 function LoginForm() {
     const location = useLocation().state as RegisterRedirectState
+    const navigate = useNavigate()
     const form = useForm({
         initialValues: {
             username: "",
@@ -27,8 +32,29 @@ function LoginForm() {
         }
     }, [location])
 
-    const submitLoginForm = (data: LoginSchema) => {
-        console.log(data)
+    const submitLoginForm = async (input: LoginSchema) => {
+        const payload = {
+            username: input.username,
+            password: input.password,
+        }
+        try {
+            const { data } = await axios.post(loginRoute, payload)
+            localStorage.setItem(
+                "user",
+                JSON.stringify({ username: data.username, email: data.email })
+            )
+            showNotification({
+                title: "You successfully logged in",
+                message: `Welcome ${input.username}`,
+            })
+            navigate("/")
+        } catch (err) {
+            showNotification({
+                title: "User Login",
+                message: "Something went wrong, please check your inputs",
+                color: "red",
+            })
+        }
     }
 
     return (

@@ -34,7 +34,6 @@ function RegisterForm() {
                 message:
                     "You succesfully logged in, you can login by entering your Username and Password now",
             })
-            localStorage.setItem("user", JSON.stringify(data))
             navigate("/login", { state: { newRegister: true, username: input.username } })
         } catch (err) {
             showNotification({
