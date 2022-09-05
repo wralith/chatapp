@@ -1,4 +1,4 @@
-import { object, string, boolean, ref } from "yup"
+import { object, string, boolean, ref, InferType } from "yup"
 
 const schema = object({
     username: string().min(4, "Username must have at least 4 characters"),
@@ -7,5 +7,7 @@ const schema = object({
     confirmPassword: string().oneOf([ref("password"), null], "Password must match"),
     termsOfService: boolean().oneOf([true], "This is required"),
 })
+
+export type RegisterSchema = InferType<typeof schema>
 
 export default schema

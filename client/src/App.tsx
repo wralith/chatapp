@@ -2,17 +2,30 @@ import { Route, Routes } from "react-router-dom"
 import Chat from "./views/Chat"
 import Login from "./views/Login"
 import Register from "./views/Register"
-import { MantineProvider } from "@mantine/core"
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core"
+import AppLayout from "./components/UI/AppLayout"
+import { useState } from "react"
+import { NotificationsProvider } from "@mantine/notifications"
 
 function App() {
+    const [colorScheme, setColorScheme] = useState<ColorScheme>("light")
+    const toggleColorScheme = (value?: ColorScheme) =>
+        setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"))
+
     return (
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-            <Routes>
-                <Route path="/" element={<Chat />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-            </Routes>
-        </MantineProvider>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+            <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme }}>
+                <NotificationsProvider>
+                    <AppLayout>
+                        <Routes>
+                            <Route path="/" element={<Chat />} />
+                            <Route path="login" element={<Login />} />
+                            <Route path="register" element={<Register />} />
+                        </Routes>
+                    </AppLayout>
+                </NotificationsProvider>
+            </MantineProvider>
+        </ColorSchemeProvider>
     )
 }
 

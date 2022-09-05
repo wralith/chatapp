@@ -1,6 +1,6 @@
-import { Box, Checkbox, TextInput, Group, Button, PasswordInput } from "@mantine/core"
+import { Box, TextInput, Group, Button, PasswordInput } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
-import schema from "./loginValidationSchema"
+import schema, { LoginSchema } from "./loginValidationSchema"
 
 function LoginForm() {
     const form = useForm({
@@ -12,9 +12,13 @@ function LoginForm() {
         validate: yupResolver(schema),
     })
 
+    const submitLoginForm = (data: LoginSchema) => {
+        console.log(data)
+    }
+
     return (
-        <Box sx={{ maxWidth: 300 }} mx="auto">
-            <form onSubmit={form.onSubmit(values => console.log(values))}>
+        <Box mx="auto">
+            <form onSubmit={form.onSubmit(values => submitLoginForm(values))}>
                 <TextInput withAsterisk label="Username" {...form.getInputProps("username")} />
                 <PasswordInput withAsterisk label="Password" {...form.getInputProps("password")} />
 
