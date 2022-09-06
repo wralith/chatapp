@@ -41,12 +41,13 @@ function LoginForm() {
             const { data } = await axios.post(loginRoute, payload)
             localStorage.setItem(
                 "user",
-                JSON.stringify({ username: data.username, email: data.email })
+                JSON.stringify(data)
             )
             showNotification({
                 title: "You successfully logged in",
                 message: `Welcome ${input.username}`,
             })
+            console.log(data)
             navigate("/")
         } catch (err) {
             showNotification({

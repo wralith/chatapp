@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import User from "../model/userModel"
+import User, { UserType } from "../model/userModel"
 import Bcrypt from "bcrypt"
 
 // TODO: Add username or email already in use
@@ -37,11 +37,38 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         }
 
         if (user && isPasswordValid) {
-            return res.status(200).json({ username: user.username, email: user.email})
+            // Did not worked somehow
+            // const payload: Partial<UserType> =   user
+            // delete payload.password
+            const payload = {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                profilePicture: user.profilePicture,
+                isProfilePictureExist: user.isProfilePictureExist,
+            }
+            return res.status(200).json(payload)
         }
 
         return res.status(500).json({ message: "error while login" })
     } catch (err) {
         return res.status(409).json({ message: err })
+    }
+}
+
+export const setProfilePicture = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.params.id
+        const pictureId = req.body.imageId
+        const userData = await User.findByIdAndUpdate(userId, {
+            isProfilePictureExist: true,
+            profilePicture: pictureId,
+        })
+
+        return res
+            .status(200)
+            .json({ ...userData, profilePicture: pictureId, isProfilePictureExist: true })
+    } catch (err) {
+        return res.status(500).json({ message: err })
     }
 }

@@ -1,6 +1,14 @@
-import{ model, Schema } from "mongoose"
+import { model, Schema } from "mongoose"
 
-const userSchema = new Schema({
+export interface UserType {
+    username: string
+    email: string
+    password: string
+    isProfilePictureExist: boolean
+    profilePicture: string
+}
+
+const userSchema = new Schema<UserType>({
     username: {
         type: String,
         required: true,
@@ -29,5 +37,5 @@ const userSchema = new Schema({
         default: "",
     },
 })
- 
+
 export default model("User", userSchema)

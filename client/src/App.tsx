@@ -6,6 +6,7 @@ import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core
 import AppLayout from "./components/UI/AppLayout"
 import { useState } from "react"
 import { NotificationsProvider } from "@mantine/notifications"
+import SelectProfilePicture from "./components/Profile/SelectProfilePicture"
 
 function App() {
     const [colorScheme, setColorScheme] = useState<ColorScheme>("light")
@@ -21,6 +22,7 @@ function App() {
                             <Route path="/" element={<Chat />} />
                             <Route path="login" element={<Login />} />
                             <Route path="register" element={<Register />} />
+                            <Route path="user/set-picture" element={<SelectProfilePicture />} />
                         </Routes>
                     </AppLayout>
                 </NotificationsProvider>

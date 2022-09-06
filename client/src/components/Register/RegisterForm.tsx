@@ -32,7 +32,7 @@ function RegisterForm() {
             showNotification({
                 title: "Redirected to Login Page",
                 message:
-                    "You succesfully logged in, you can login by entering your Username and Password now",
+                    "You successfully logged in, you can login by entering your Username and Password now",
             })
             navigate("/login", { state: { newRegister: true, username: input.username } })
         } catch (err) {
