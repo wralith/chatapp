@@ -39,15 +39,18 @@ function LoginForm() {
         }
         try {
             const { data } = await axios.post(loginRoute, payload)
-            localStorage.setItem(
-                "user",
-                JSON.stringify(data)
-            )
+            localStorage.setItem("user", JSON.stringify(data))
             showNotification({
                 title: "You successfully logged in",
                 message: `Welcome ${input.username}`,
             })
             console.log(data)
+
+            if (!data.isProfilePictureExist) {
+                navigate("/user/set-picture")
+                return
+            }
+
             navigate("/")
         } catch (err) {
             showNotification({
